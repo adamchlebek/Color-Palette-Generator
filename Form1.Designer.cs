@@ -31,6 +31,10 @@
             this.btnSingleImage = new System.Windows.Forms.Button();
             this.btnMultipleImages = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblPixelCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSingleImage
@@ -41,6 +45,7 @@
             this.btnSingleImage.TabIndex = 0;
             this.btnSingleImage.Text = "Upload Single Image";
             this.btnSingleImage.UseVisualStyleBackColor = true;
+            this.btnSingleImage.Click += new System.EventHandler(this.BtnSingleImage_Click);
             // 
             // btnMultipleImages
             // 
@@ -53,25 +58,58 @@
             // 
             // btnDownload
             // 
+            this.btnDownload.Enabled = false;
             this.btnDownload.Location = new System.Drawing.Point(13, 343);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(774, 95);
             this.btnDownload.TabIndex = 2;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Visible = false;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(375, 249);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(47, 13);
+            this.lblStatus.TabIndex = 3;
+            this.lblStatus.Text = "Ready...";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(13, 223);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(774, 23);
+            this.progressBar1.TabIndex = 4;
+            // 
+            // lblPixelCount
+            // 
+            this.lblPixelCount.AutoSize = true;
+            this.lblPixelCount.Location = new System.Drawing.Point(12, 327);
+            this.lblPixelCount.Name = "lblPixelCount";
+            this.lblPixelCount.Size = new System.Drawing.Size(66, 13);
+            this.lblPixelCount.TabIndex = 5;
+            this.lblPixelCount.Text = "Pixel Count: ";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblPixelCount);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.btnMultipleImages);
             this.Controls.Add(this.btnSingleImage);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -80,6 +118,10 @@
         private System.Windows.Forms.Button btnSingleImage;
         private System.Windows.Forms.Button btnMultipleImages;
         private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label lblPixelCount;
     }
 }
 
