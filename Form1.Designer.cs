@@ -37,6 +37,7 @@
             this.btnSingleImage = new System.Windows.Forms.Button();
             this.btnFolder = new System.Windows.Forms.Button();
             this.lblTotalPixelCount = new System.Windows.Forms.Label();
+            this.btnRestart = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnDownload
@@ -115,11 +116,22 @@
             this.lblTotalPixelCount.TabIndex = 7;
             this.lblTotalPixelCount.Text = "Pixel Count: ";
             // 
+            // btnRestart
+            // 
+            this.btnRestart.Location = new System.Drawing.Point(17, 195);
+            this.btnRestart.Name = "btnRestart";
+            this.btnRestart.Size = new System.Drawing.Size(252, 52);
+            this.btnRestart.TabIndex = 8;
+            this.btnRestart.Text = "New Image (App Will Restart)";
+            this.btnRestart.UseVisualStyleBackColor = true;
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.lblTotalPixelCount);
             this.Controls.Add(this.btnFolder);
             this.Controls.Add(this.lblPixelCount);
@@ -146,6 +158,7 @@
         private System.Windows.Forms.Button btnSingleImage;
         private System.Windows.Forms.Button btnFolder;
         private System.Windows.Forms.Label lblTotalPixelCount;
+        private System.Windows.Forms.Button btnRestart;
     }
 }
 

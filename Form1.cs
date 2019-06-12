@@ -76,7 +76,7 @@ namespace ColorPaletteGenerator
             progressBar1.Value = progressBar1.Maximum;
 
             lblTotalPixelCount.Text = $"Pixel Count: {pixelCount}";
-            lblPixelCount.Text = $"Pixel Count: {dict.Count}";
+            lblPixelCount.Text = $"Different Pixel Count: {dict.Count}";
             lblStatus.Text = "Done";
 
             btnDownload.Enabled = true;
@@ -86,7 +86,8 @@ namespace ColorPaletteGenerator
 
         private void BtnDownload_Click(object sender, EventArgs e)
         {
-            string htmlString = "<div style=\"padding: 5px;\">";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<div style=\"padding: 5px;\">");
 
             int count = 0;
 
@@ -116,39 +117,37 @@ namespace ColorPaletteGenerator
                 colorList.Add(top.Key);
                 dict.Remove(top.Key);
             }
-
-
+            
             foreach (Color color in colorList) {
                 count += 1;
                 if (count < 280)
                 {
-                    htmlString += "<li style=\"float: left; \">";
-                    htmlString += $"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div><p style=\"text-align: center;\">{copy[color]}</p>";
-                    htmlString += "</li>";
+                    sb.Append("<li style=\"float: left; \">");
+                    sb.Append($"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div><p style=\"text-align: center;\">{copy[color]}</p>");
+                    sb.Append("</li>");
                 }
                 else {
-                    htmlString += "<p style=\"page -break-before: always\">";
-                    htmlString += "<li style=\"float: left; \">";
-                    htmlString += $"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div>";
-                    htmlString += "</li>";
+                    sb.Append("<p style=\"page -break-before: always\">");
+                    sb.Append("<li style=\"float: left; \">");
+                    sb.Append($"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div>");
+                    sb.Append("</li>");
                     count = 0;
                 }
 
             }
 
-            htmlString += "</div>";
+            sb.Append("</div>");
 
             lblStatus.Text = "Rendering PDF...";
             Application.DoEvents();
 
-            RenderPdfAsync(htmlString);
+            RenderPdfAsync(sb.ToString());
         }
 
         private void RenderPdfAsync(string htmlString)
         {
             IronPdf.HtmlToPdf render = new IronPdf.HtmlToPdf();
 
-            
             lblStatus.Text = "Saved!";
 
             render.RenderHtmlAsPdf(htmlString).SaveAs(folderPath + "/palette.pdf");
@@ -244,6 +243,11 @@ namespace ColorPaletteGenerator
             btnDownload.Enabled = true;
             btnSingleImage.Enabled = false;
             btnFolder.Enabled = false;
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
     }
 }
