@@ -30,6 +30,7 @@
         {
             this.btnSingleImage = new System.Windows.Forms.Button();
             this.btnMultipleImages = new System.Windows.Forms.Button();
+            this.btnDownload = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSingleImage
@@ -50,11 +51,22 @@
             this.btnMultipleImages.Text = "Upload Multiple Image";
             this.btnMultipleImages.UseVisualStyleBackColor = true;
             // 
+            // btnDownload
+            // 
+            this.btnDownload.Location = new System.Drawing.Point(13, 343);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(774, 95);
+            this.btnDownload.TabIndex = 2;
+            this.btnDownload.Text = "Download";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.btnMultipleImages);
             this.Controls.Add(this.btnSingleImage);
             this.Name = "Form1";
@@ -67,6 +79,7 @@
 
         private System.Windows.Forms.Button btnSingleImage;
         private System.Windows.Forms.Button btnMultipleImages;
+        private System.Windows.Forms.Button btnDownload;
     }
 }
 
