@@ -16,7 +16,10 @@ namespace ColorPaletteGenerator
     {
         private string folderPath;
 
-        List<Color> pixelList;
+        private Dictionary<Color, int> dict;
+
+        //List<Color> pixelList;
+
         public Form1()
         {
             Form1.CheckForIllegalCrossThreadCalls = false;
@@ -25,8 +28,8 @@ namespace ColorPaletteGenerator
 
         private void BtnSingleImage_Click(object sender, EventArgs e)
         {
-            List<Color> pixelList = new List<Color>();
-            
+            dict = new Dictionary<Color, int>();
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png"; // file types, that will be allowed to upload
             dialog.Multiselect = false; // allow/deny user to upload more than one file at a time
@@ -41,7 +44,8 @@ namespace ColorPaletteGenerator
         }
 
         public void pixelRead(OpenFileDialog dialog) {
-            pixelList = new List<Color>();
+            //pixelList = new List<Color>();
+            dict = new Dictionary<Color, int>();
 
             Bitmap img = new Bitmap(dialog.FileName);
             int pixelCount = 0;
@@ -56,9 +60,13 @@ namespace ColorPaletteGenerator
                 {
                     Color pixel = img.GetPixel(i, j);
 
-                    if (!pixelList.Contains(pixel))
+                    if (!dict.Keys.Contains(pixel))
                     {
-                        pixelList.Add(pixel);
+                        dict.Add(pixel, 1);
+                    }
+                    else
+                    {
+                        dict[pixel] += 1;
                     }
                 }
 
@@ -68,7 +76,7 @@ namespace ColorPaletteGenerator
             progressBar1.Value = progressBar1.Maximum;
 
             lblTotalPixelCount.Text = $"Pixel Count: {pixelCount}";
-            lblPixelCount.Text = $"Pixel Count: {pixelList.Count}";
+            lblPixelCount.Text = $"Pixel Count: {dict.Count}";
             lblStatus.Text = "Done";
 
             btnDownload.Enabled = true;
@@ -82,12 +90,40 @@ namespace ColorPaletteGenerator
 
             int count = 0;
 
-            foreach (Color color in pixelList) {
+            Dictionary<Color, int> copy = new Dictionary<Color, int>(dict);
+
+            List<Color> colorList = new List<Color>();
+
+            while (colorList.Count != copy.Count)
+            {
+                KeyValuePair<Color, int> top = new KeyValuePair<Color, int>();
+
+                foreach (KeyValuePair<Color, int> entry in dict)
+                {
+                    if (top.Key.IsEmpty)
+                    {
+                        top = entry;
+                    }
+                    else
+                    {
+                        if (entry.Value > top.Value)
+                        {
+                            top = entry;
+                        }
+                    }
+                }
+
+                colorList.Add(top.Key);
+                dict.Remove(top.Key);
+            }
+
+
+            foreach (Color color in colorList) {
                 count += 1;
                 if (count < 280)
                 {
                     htmlString += "<li style=\"float: left; \">";
-                    htmlString += $"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div>";
+                    htmlString += $"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div><p style=\"text-align: center;\">{copy[color]}</p>";
                     htmlString += "</li>";
                 }
                 else {
@@ -119,7 +155,9 @@ namespace ColorPaletteGenerator
 
             MessageBox.Show("File Saved to " + folderPath);
 
-            pixelList = new List<Color>();
+            //pixelList = new List<Color>();
+            dict = new Dictionary<Color, int>();
+
             btnDownload.Enabled = false;
             btnSingleImage.Enabled = true;
             btnFolder.Enabled = true;
@@ -132,7 +170,6 @@ namespace ColorPaletteGenerator
 
         private void btnFolder_Click(object sender, EventArgs e)
         {
-            List<Color> pixelList = new List<Color>();
 
             using (var fbd = new FolderBrowserDialog())
             {
@@ -151,7 +188,9 @@ namespace ColorPaletteGenerator
         {
             folderPath = Path.GetFullPath(result.SelectedPath);
 
-            pixelList = new List<Color>();
+            //pixelList = new List<Color>();
+            dict = new Dictionary<Color, int>();
+
             int pixelCount = 0;
 
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".jpe", ".jfif", ".png", ".PNG" };
@@ -182,9 +221,13 @@ namespace ColorPaletteGenerator
                     {
                         Color pixel = img.GetPixel(i, j);
 
-                        if (!pixelList.Contains(pixel))
+                        if (!dict.Keys.Contains(pixel))
                         {
-                            pixelList.Add(pixel);
+                            dict.Add(pixel, 1);
+                        }
+                        else
+                        {
+                            dict[pixel] += 1;
                         }
                     }
 
@@ -195,7 +238,7 @@ namespace ColorPaletteGenerator
             progressBar1.Value = progressBar1.Maximum;
             
             lblTotalPixelCount.Text = $"Pixel Count: {pixelCount}";
-            lblPixelCount.Text = $"Different Pixel Count: {pixelList.Count}";
+            lblPixelCount.Text = $"Different Pixel Count: {dict.Count}";
             lblStatus.Text = "Done";
             
             btnDownload.Enabled = true;
