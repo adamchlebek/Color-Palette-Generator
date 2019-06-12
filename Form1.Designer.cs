@@ -35,6 +35,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lblPixelCount = new System.Windows.Forms.Label();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // btnSingleImage
@@ -65,6 +66,7 @@
             this.btnDownload.TabIndex = 2;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.BtnDownload_Click);
             // 
             // openFileDialog1
             // 
@@ -122,6 +124,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label lblPixelCount;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

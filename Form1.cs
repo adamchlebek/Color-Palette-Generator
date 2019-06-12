@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,7 @@ namespace ColorPaletteGenerator
 {
     public partial class Form1 : Form
     {
+        List<Color> pixelList;
         public Form1()
         {
             Form1.CheckForIllegalCrossThreadCalls = false;
@@ -35,7 +37,7 @@ namespace ColorPaletteGenerator
         }
 
         public void pixelRead(OpenFileDialog dialog) {
-            List<Color> pixelList = new List<Color>();
+            pixelList = new List<Color>();
 
             Bitmap img = new Bitmap(dialog.FileName);
 
@@ -62,6 +64,44 @@ namespace ColorPaletteGenerator
             lblStatus.Text = "Done";
 
             btnDownload.Enabled = true;
+        }
+
+        private void BtnDownload_Click(object sender, EventArgs e)
+        {
+            IronPdf.HtmlToPdf render = new IronPdf.HtmlToPdf();
+
+            string htmlString = "<div style=\"padding: 5px;\">";
+
+            int count = 0;
+
+            foreach (Color color in pixelList) {
+                count += 1;
+                if (count < 20)
+                {
+                    htmlString += "<li style=\"float: left; \">";
+                    htmlString += $"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div>";
+                    htmlString += "</li>";
+                }
+                else {
+                    htmlString += "<p style=\"page -break-before: always\">";
+                    htmlString += "<li style=\"float: left; \">";
+                    htmlString += $"<div style=\"display: flex; margin: 3px; width: 50px; height: 50px; background: rgba({color.R}, {color.G}, {color.B}, {color.A}) ;\"></div>";
+                    htmlString += "</li>";
+                    count = 0;
+                }
+
+            }
+
+            htmlString += "</div>";
+
+            lblStatus.Text = "Rendering PDF...";
+
+            render.RenderHtmlAsPdf(htmlString).SaveAs(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/palette.pdf");
+
+            lblStatus.Text = "Saved!";
+
+            MessageBox.Show("File Saved to Desktop");
+
         }
     }
 }
